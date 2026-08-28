@@ -9,6 +9,12 @@
 /.idea/assetWizardSettings.xml
 .DS_Store
 /build
+/app/build
 /captures
 .externalNativeBuild
 .cxx
+# Kotlin daemon & KSP caches
+.kotlin/
+# 签名密钥与配置（本地发布签名用，不应提交）
+keystore.jks
+keystore.properties

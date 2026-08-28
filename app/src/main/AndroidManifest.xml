@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.lyubishchevtiming">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
-
         android:name=".service.App"
         android:allowBackup="true"
         android:icon="@drawable/ic_lyubishchev_r"
@@ -15,11 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-8829510278890922~4259827292"/>
 
-        <receiver android:name=".widget.SummaryWidgetProvider">
+        <receiver android:name=".widget.SummaryWidgetProvider"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -48,7 +46,8 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -57,7 +56,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.example.lyubishchevtiming.fileprovider"
+            android:authorities="${applicationId}.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -65,8 +64,12 @@
                 android:resource="@xml/provider_path" />
         </provider>
 
-        <service android:name=".service.TimeTrackingService" />
-        <service android:name=".widget.SummaryWidgetService"/>
+        <!-- 前台计时服务：使用 specialUse 类型以适配 Android 14 (SDK 34) -->
+        <service
+            android:name=".service.TimeTrackingService"
+            android:foregroundServiceType="specialUse"
+            tools:ignore="ForegroundServiceType" />
+        <service android:name=".widget.SummaryWidgetService" />
     </application>
 
 </manifest>

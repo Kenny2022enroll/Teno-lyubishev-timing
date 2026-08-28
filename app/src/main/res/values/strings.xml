@@ -29,7 +29,10 @@
     <string name="sat_label">Sat</string>
     <string name="sun_label">Sun</string>
     <string name="save">Save</string>
-
+    <string name="err_enter_task_name">Enter task name</string>
+    <string name="err_select_days">Select days of activity</string>
+    <string name="err_select_time">Select time of activity</string>
+    <string name="toast_selected_number">Selected number %1$d</string>
 
     <!--activity_time_tracking.xml-->
     <string name="cancel">Cancel</string>
@@ -43,17 +46,38 @@
     <!--fragment_summary-->
     <string name="period_label">Period: </string>
     <string name="today">today</string>
-    <string name="ineffective_time">Ineffective time</string>
+    <string name="select_period">Select a period</string>
+    <string name="productivity">Productivity</string>
+    <!-- 科学重解读：原 "Ineffective time" 把必要的休息污名化为"无效"，此处改为"未追踪时间" -->
+    <string name="untracked_time">Untracked time</string>
     <string name="chart_name">%1$d hours %2$d min out of %3$d hours %4$d min</string>
+    <!-- 恢复性休息提示：基于注意力恢复理论 (Kaplan & Kaplan, 1995) -->
+    <string name="chart_recovery_note">Rest is essential, not ineffective</string>
+    <string name="nothing_done_today">Nothing done today</string>
     <string name="date">Mon, Feb 17</string>
     <string name="download">Download</string>
-
+    <string name="no_logs_to_export">No logs to export</string>
+    <string name="send_logs">Send logs</string>
 
     <!--widget-->
     <string name="add_widget">Add widget</string>
     <string name="productivity_label">Productivity:</string>
     <string name="actual_time">%1$d hours %2$d min</string>
-    <string name="desired_time">out of %1$d hours %2$d min"</string>
+    <string name="desired_time">out of %1$d hours %2$d min</string>
 
+    <!-- 前台服务通知 -->
+    <string name="foreground_running">Stopwatch running · %1$s</string>
+    <string name="foreground_paused">Stopwatch paused</string>
 
+    <!-- 休息提醒：番茄工作法 (Cirillo, 1980s) -->
+    <string name="pomodoro_break_title">Pomodoro break time</string>
+    <string name="pomodoro_break_text">You\'ve focused for 25 minutes. Take a %1$d-minute short break to sustain attention (Pomodoro Technique).</string>
+    <!-- 休息提醒：超日节律 / 基本休息-活动周期 (Kleitman, 1955) -->
+    <string name="ultradian_break_title">Ultradian rest cycle</string>
+    <string name="ultradian_break_text">You\'ve been working ~90 minutes. Alertness drops after an ultradian cycle — take a %1$d-minute recovery break.</string>
+
+    <!-- 注意力残留理论 (Leroy, 2009)：任务切换警告 -->
+    <string name="attention_residue_title">Another task is being tracked</string>
+    <string name="attention_residue_text">Switching tasks now leaves attention from the previous task stuck on it (attention residue, Leroy 2009), which harms performance. Start \"%1$s\" anyway?</string>
+    <string name="continue_anyway">Continue</string>
 </resources>

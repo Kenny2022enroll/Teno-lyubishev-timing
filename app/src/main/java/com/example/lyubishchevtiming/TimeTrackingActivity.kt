@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.content.IntentCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.lyubishchevtiming.database.AppDatabase
@@ -126,7 +127,10 @@ class TimeTrackingActivity : AppCompatActivity() {
                 SystemClock.elapsedRealtime() - binding.chronometer.base else timeWhenStopped)
             putExtra("running", isRunning)
         }
-        startForegroundService(serviceIntent)
+        // 使用 ContextCompat 兼容 API 25（Android 7.1）：startForegroundService 自 API 26 起
+        // 才存在，直接调用会在 Android 7.1 上抛 NoSuchMethodError 导致点击 Start 闪退。
+        // ContextCompat 在 API < 26 时回退到 startService()，服务内仍调用 startForeground()。
+        ContextCompat.startForegroundService(this, serviceIntent)
     }
 
     private fun stopTimeTrackingService() {

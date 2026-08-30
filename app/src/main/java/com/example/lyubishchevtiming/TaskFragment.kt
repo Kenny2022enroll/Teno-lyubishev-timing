@@ -6,13 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.example.lyubishchevtiming.database.AppDatabase
 import com.example.lyubishchevtiming.databinding.FragmentTaskBinding
 import com.example.lyubishchevtiming.model.Task
 import com.example.lyubishchevtiming.viewmodel.MainViewModel
+import kotlinx.coroutines.launch
 
 class TaskFragment : Fragment() {
 
@@ -22,6 +26,7 @@ class TaskFragment : Fragment() {
     private var tasks: List<Task> = emptyList()
     private var taskAdapter: TaskAdapter? = null
     private lateinit var db: AppDatabase
+    private lateinit var mainViewModel: MainViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -44,13 +49,21 @@ class TaskFragment : Fragment() {
                 startActivity(intent)
             }
 
+        // 长按任务 → 删除（软删除）：从活动列表移除，但保留其历史统计
+        binding.gridViewTasks.onItemLongClickListener =
+            AdapterView.OnItemLongClickListener { _, _, position, _ ->
+                val task = tasks.getOrNull(position) ?: return@OnItemLongClickListener false
+                confirmDeleteTask(task)
+                true
+            }
+
         setupViewModel()
         return binding.root
     }
 
     private fun setupViewModel() {
-        val viewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
-        viewModel.tasks.observe(viewLifecycleOwner, Observer { list ->
+        mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
+        mainViewModel.tasks.observe(viewLifecycleOwner, Observer { list ->
             if (list.isNotEmpty()) {
                 tasks = list
                 taskAdapter = TaskAdapter(requireActivity(), tasks)
@@ -60,6 +73,20 @@ class TaskFragment : Fragment() {
                 showAddButton()
             }
         })
+    }
+
+    private fun confirmDeleteTask(task: Task) {
+        AlertDialog.Builder(requireContext())
+            .setTitle(R.string.delete)
+            .setMessage(getString(R.string.delete_task_confirm, task.name))
+            .setPositiveButton(R.string.delete) { _, _ ->
+                viewLifecycleOwner.lifecycleScope.launch {
+                    mainViewModel.archiveTask(task.id)
+                    Toast.makeText(requireContext(), R.string.task_deleted, Toast.LENGTH_SHORT).show()
+                }
+            }
+            .setNegativeButton(android.R.string.cancel, null)
+            .show()
     }
 
     private fun showAddButton() {

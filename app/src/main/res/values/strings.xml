@@ -6,6 +6,8 @@
     <!--fragment_task.xml-->
     <string name="add">Add</string>
     <string name="delete">Delete</string>
+    <string name="delete_task_confirm">Delete \"%1$s\"? The task is removed from your list, but already tracked time stays in your statistics.</string>
+    <string name="task_deleted">Task deleted. Statistics kept.</string>
 
     <!--activity_task.xml-->
     <string name="goal">Goal: %1$s</string>

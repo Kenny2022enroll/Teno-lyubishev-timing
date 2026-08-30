@@ -17,4 +17,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     suspend fun deleteAllTasks() = withContext(Dispatchers.IO) {
         database.taskDao().deleteTasks()
     }
+
+    /**
+     * “删除”单个任务：实际为软删除（归档）。任务从活动列表移除，
+     * 但其历史 Log 不被删除，统计中仍保留对应时长。
+     */
+    suspend fun archiveTask(taskId: Int) = withContext(Dispatchers.IO) {
+        database.taskDao().archiveTask(taskId)
+    }
 }
